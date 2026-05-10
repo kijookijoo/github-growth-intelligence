@@ -1,0 +1,14 @@
+[project]
+name = "github-growth-intelligence"
+version = "0.1.0"
+description = "MVP backend and UI for GitHub repository growth intelligence."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.136.1",
+    "mcp[cli]>=1.27.1",
+]
+
+[project.scripts]
+github-growth-backend = "backend.main:main"
+mcp-demo-server = "mcp_server.main:main"

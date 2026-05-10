@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+
+# Virtual environments
+.venv
+
+# Frontend dependencies and build output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Local secrets
+.env
+github_growth/.env
+backend/.env
+backend/github_growth/.env
+
+# Local logs and downloaded artifacts
+*.log
+*.vsix
+notes.txt
+
+# Project notes: keep only the public README tracked
+*.md
+!README.md
