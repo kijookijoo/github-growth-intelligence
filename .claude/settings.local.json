@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(NODE_OPTIONS=--use-system-ca npm install framer-motion)",
+      "Bash(NODE_OPTIONS=--use-system-ca npx vite build)",
+      "Bash(NODE_OPTIONS=--use-system-ca npx vite --host 127.0.0.1 --port 5180)",
+      "Bash(uv run *)",
+      "Bash(curl -s -X POST http://127.0.0.1:8002/mcp -H 'Content-Type: application/json' -H 'mcp-protocol-version: 2025-11-25' -d '{ *)",
+      "Bash(pkill -f \"python -m mcp_server.main\")",
+      "Bash(curl -s -X POST http://127.0.0.1:8002/mcp -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'mcp-protocol-version: 2025-11-25' -d '{ *)",
+      "Bash(python -m json.tool)",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(npm run *)",
+      "Bash(netstat -ano)"
+    ]
+  }
+}
