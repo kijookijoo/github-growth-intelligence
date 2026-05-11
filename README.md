@@ -1,4 +1,4 @@
-# GitHub Growth Intelligence
+# RepoCharts
 
 Open-source growth intelligence MVP for GitHub repositories. The product reconstructs
 historical star timelines from GitHub's own stargazer timestamps, detects abnormal
@@ -10,13 +10,15 @@ growth days, and fetches nearby repository activity that may explain a spike.
 GitHub API
   -> backend ingestion and transformation
   -> backend analytics services
-  -> FastAPI HTTP API
-  -> React UI
+  -> GitHub MCP server over Streamable HTTP
+  -> React UI MCP client
 ```
 
 The GitHub API is the source of truth. The MVP uses live fetches and intentionally
 limits stargazer pagination with `max_pages` so large repositories do not consume
-thousands of API calls during exploration.
+thousands of API calls during exploration. For partial results, RepoCharts fetches
+the newest available stargazer pages and anchors cumulative counts against the
+repository's current star total.
 
 ## Repository Layout
 
@@ -29,46 +31,52 @@ frontend/
   src/                     React UI
   package.json             Frontend scripts and dependencies
 mcp_server/
-  main.py                  Existing MCP demo server, kept separate from GitHub layer
+  main.py                  GitHub MCP server for RepoCharts
 pyproject.toml             Python project metadata and scripts
 README.md
 ```
 
-## Backend
+## GitHub MCP Server
 
 Set a GitHub token for authenticated rate limits:
 
 ```powershell
 $env:GITHUB_TOKEN = "github_pat_..."
-uv run python -m backend.main
+uv run python -m mcp_server.main
 ```
 
-The API defaults to:
+The MCP server defaults to:
 
 ```text
-http://127.0.0.1:8001
+http://127.0.0.1:8002/mcp
 ```
 
-Interactive docs:
+Available MCP tools:
 
 ```text
-http://127.0.0.1:8001/docs
+get_growth_signals
+get_star_history
+get_growth_profile
 ```
 
-Endpoints:
+`get_growth_signals` defaults to requesting up to 250 stargazer pages, then caps
+the actual page count from the current GitHub rate-limit budget. The cap keeps an
+8-request safety buffer and reserves roughly 25% of the remaining budget for
+activity overlays. With unauthenticated GitHub's 60 requests/hour, that usually
+means about 35-40 recent stargazer pages plus a small activity sample. With an
+authenticated token, it can return the full requested 250-page window when quota
+is available.
 
-```text
-GET /health
-GET /repos/{owner}/{repo}/star-history?max_pages=50
-GET /repos/{owner}/{repo}/growth-spikes?max_pages=50&window_days=14&min_z_score=3
-GET /repos/{owner}/{repo}/growth-profile?max_pages=50&include_context=true
+If this machine has local certificate-chain issues when calling GitHub, use:
+
+```powershell
+$env:GITHUB_SSL_VERIFY = "false"
+uv run python -m mcp_server.main
 ```
 
-Example:
+The legacy FastAPI backend remains available for development, but the frontend now
+uses the MCP server instead of REST endpoints.
 
-```text
-http://127.0.0.1:8001/repos/psf/requests/growth-profile?max_pages=5
-```
 
 ## Frontend
 
@@ -84,6 +92,12 @@ The UI defaults to:
 
 ```text
 http://127.0.0.1:5173
+```
+
+The frontend calls:
+
+```text
+http://127.0.0.1:8002/mcp
 ```
 
 If npm fails on this machine with local certificate verification errors, install with:

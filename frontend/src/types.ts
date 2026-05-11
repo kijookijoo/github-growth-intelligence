@@ -4,6 +4,26 @@ export type DailyStarPoint = {
   cumulative: number;
 };
 
+export type DailyCommitPoint = {
+  date: string;
+  commits: number;
+};
+
+export type DailyReadmeChangePoint = {
+  date: string;
+  readme_changes: number;
+};
+
+export type DailyPullRequestPoint = {
+  date: string;
+  pull_requests: number;
+};
+
+export type DailyReleasePoint = {
+  date: string;
+  releases: number;
+};
+
 export type FetchMetadata = {
   fetched_at: string;
   complete: boolean;
@@ -94,4 +114,14 @@ export type GrowthProfile = {
 export type GrowthSpikesResponse = {
   star_history: StarHistory;
   spikes: GrowthSpike[];
+};
+
+export type GrowthSignals = {
+  repository: RepositoryIdentity;
+  star_history: StarHistory;
+  commit_frequency: DailyCommitPoint[];
+  readme_change_frequency: DailyReadmeChangePoint[];
+  pull_request_frequency: DailyPullRequestPoint[];
+  release_frequency: DailyReleasePoint[];
+  suggested_metrics: string[];
 };
