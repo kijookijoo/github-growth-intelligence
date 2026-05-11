@@ -12,3 +12,4 @@ dependencies = [
 [project.scripts]
 github-growth-backend = "backend.main:main"
 mcp-demo-server = "mcp_server.main:main"
+repocharts-github-mcp = "mcp_server.main:main"
