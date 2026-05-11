@@ -12,7 +12,8 @@
       "Bash(python -m json.tool)",
       "Bash(taskkill /F /IM python.exe)",
       "Bash(npm run *)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(python main.py)"
     ]
   }
 }
